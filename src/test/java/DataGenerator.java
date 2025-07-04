@@ -1,4 +1,6 @@
 import com.github.javafaker.Faker;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
 import lombok.Value;
 
 import java.time.LocalDate;
@@ -33,6 +35,7 @@ public class DataGenerator {
         return cities[random.nextInt(cities.length)];
     }
 
+
     public static String generateName(Faker faker) {
         return faker.name().lastName() + " " + faker.name().firstName();
     }
@@ -48,13 +51,16 @@ public class DataGenerator {
         private Registration() {
         }
 
+        @Step("Генерация тестового пользователя")
         public static UserInfo generateUser(String locale) {
-            faker = new Faker(new Locale(locale));
+            Faker faker = new Faker(new Locale(locale));
             String city = generateCity();
             String name = generateName(faker);
             String phone = generatePhone(faker);
-            return new UserInfo(city, name, phone);
 
+            Allure.step("Генерация тестового пользователя: " + city + ", " + name + ", " + phone);
+
+            return new UserInfo(city, name, phone);
         }
 
         @Value
